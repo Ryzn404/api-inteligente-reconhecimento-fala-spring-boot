@@ -210,7 +210,27 @@ $ curl http://localhost:8080/transactions/summary
 {"categories":[{"category":"AUTO","transactionCount":1,"total":200.0},{"category":"GROCERIES","transactionCount":2,"total":121.0},{"category":"PHARMA","transactionCount":1,"total":39.9}],"transactionCount":4,"total":360.9}   [HTTP 200]
 ```
 
-> **Dica para Windows:** no PowerShell, use `curl.exe` (o `curl` sozinho é um apelido do `Invoke-WebRequest`). Se o JSON tiver acentos, o terminal pode enviar o texto em outra codificação e a API responde `400`. Nesse caso, salve o JSON em um arquivo UTF-8 e envie com `--data-binary @arquivo.json`, ou use o [`requests.http`](requests.http).
+#### No Windows (PowerShell)
+
+Os exemplos com `curl` acima são para Bash (Linux, macOS ou Git Bash). No Windows PowerShell eles não funcionam como estão: lá o `curl` é um apelido do `Invoke-WebRequest`, e o `curl.exe` recebe o JSON sem as aspas, o que faz a API responder `400`. Use o `Invoke-RestMethod`, com `charset=utf-8` para os acentos chegarem certos:
+
+```powershell
+Invoke-RestMethod -Method Post -Uri http://localhost:8080/transactions `
+  -ContentType 'application/json; charset=utf-8' `
+  -Body '{"description":"Remédio","category":"PHARMA","amount":3990}'
+
+Invoke-RestMethod http://localhost:8080/transactions/summary | ConvertTo-Json -Depth 3
+```
+
+O Windows PowerShell 5.1 pode exibir `RemÃ©dio` na resposta. É só a exibição: a API responde em UTF-8 e o dado é salvo certo. Abrindo `http://localhost:8080/transactions/PHARMA` no navegador, aparece `Remédio`.
+
+Para o comando de voz, o `curl.exe` funciona normalmente, porque envia um arquivo e não JSON:
+
+```powershell
+curl.exe -X POST http://localhost:8080/transactions/ai -F "file=@src/test/resources/audio/recording-1.m4a" --output resposta.mp3
+```
+
+Outra opção é o arquivo [`requests.http`](requests.http), que funciona no IntelliJ e na extensão REST Client do VS Code.
 
 ## Testes automatizados
 
