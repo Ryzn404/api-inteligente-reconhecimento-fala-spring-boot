@@ -1,0 +1,38 @@
+### Registrar um gasto (valor em centavos: 8050 = R$ 80,50)
+POST http://localhost:8080/transactions
+Content-Type: application/json
+
+{
+  "description": "Compras no mercado",
+  "category": "GROCERIES",
+  "amount": 8050
+}
+
+### Registrar um gasto inválido (retorna 400 com a mensagem do erro)
+POST http://localhost:8080/transactions
+Content-Type: application/json
+
+{
+  "description": "Compras no mercado",
+  "category": "GROCERIES",
+  "amount": 0
+}
+
+### Listar gastos de uma categoria (GROCERIES, PHARMA ou AUTO)
+GET http://localhost:8080/transactions/GROCERIES
+
+### Resumo dos gastos: total geral e total por categoria
+GET http://localhost:8080/transactions/summary
+
+### Comando de voz: envia um áudio e recebe a resposta em MP3 (precisa de OPENAI_API_KEY válida)
+POST http://localhost:8080/transactions/ai
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="recording-1.m4a"
+Content-Type: audio/mp4
+
+< ./src/test/resources/audio/recording-1.m4a
+--boundary--
+
+>>! resposta.mp3

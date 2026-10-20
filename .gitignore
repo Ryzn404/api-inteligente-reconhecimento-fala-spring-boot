@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Banco H2 do perfil local ###
+data/
