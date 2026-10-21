@@ -3,6 +3,8 @@ package dio.budgeting.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDate;
+
 @Getter
 @AllArgsConstructor
 public class Transaction {
@@ -13,16 +15,18 @@ public class Transaction {
     private String description;
     private long amount;
     private Category category;
+    private LocalDate date;
 
-    public Transaction(String description, long amount, Category category) {
-        validate(description, amount, category);
+    public Transaction(String description, long amount, Category category, LocalDate date) {
+        validate(description, amount, category, date);
         this.id = new TransactionId();
         this.description = description.strip();
         this.amount = amount;
         this.category = category;
+        this.date = date;
     }
 
-    private static void validate(String description, long amount, Category category) {
+    private static void validate(String description, long amount, Category category, LocalDate date) {
         if (description == null || description.isBlank()) {
             throw new InvalidTransactionException("A descrição do gasto é obrigatória.");
         }
@@ -35,6 +39,12 @@ public class Transaction {
         }
         if (category == null) {
             throw new InvalidTransactionException("A categoria do gasto é obrigatória.");
+        }
+        if (date == null) {
+            throw new InvalidTransactionException("A data do gasto é obrigatória.");
+        }
+        if (date.isAfter(LocalDate.now())) {
+            throw new InvalidTransactionException("A data do gasto não pode estar no futuro.");
         }
     }
 }

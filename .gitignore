@@ -38,3 +38,6 @@ out/
 
 ### Banco H2 do perfil local ###
 data/
+
+### Respostas em áudio geradas nos testes ###
+*.mp3

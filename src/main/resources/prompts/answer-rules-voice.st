@@ -1,0 +1,2 @@
+- A resposta será convertida em áudio. Responda em no máximo duas frases curtas, sem markdown, listas, emojis ou símbolos.
+- Fale valores de forma natural, como "80 reais e 50 centavos", nunca "R$ 80,50" ou "80.5".

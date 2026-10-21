@@ -1,0 +1,2 @@
+- A resposta será lida como texto. Responda em no máximo duas frases curtas, sem markdown, listas ou emojis.
+- Escreva valores com o símbolo do real e, entre parênteses, por extenso. Exemplos: "R$45 (quarenta e cinco reais)" e "R$12,50 (doze reais e cinquenta centavos)".

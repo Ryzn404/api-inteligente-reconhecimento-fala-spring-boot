@@ -1,4 +1,4 @@
-### Registrar um gasto (valor em centavos: 8050 = R$ 80,50)
+### Registrar um gasto (valor em centavos: 8050 = R$ 80,50; sem "date", vale a data de hoje)
 POST http://localhost:8080/transactions
 Content-Type: application/json
 
@@ -6,6 +6,17 @@ Content-Type: application/json
   "description": "Compras no mercado",
   "category": "GROCERIES",
   "amount": 8050
+}
+
+### Registrar um gasto com data e uma das categorias novas (RESTAURANT ou OTHER)
+POST http://localhost:8080/transactions
+Content-Type: application/json
+
+{
+  "description": "Pizza com a família",
+  "category": "RESTAURANT",
+  "amount": 8990,
+  "date": "2026-10-19"
 }
 
 ### Registrar um gasto inválido (retorna 400 com a mensagem do erro)
@@ -18,13 +29,42 @@ Content-Type: application/json
   "amount": 0
 }
 
-### Listar gastos de uma categoria (GROCERIES, PHARMA ou AUTO)
+### Categoria inexistente (retorna 400 com a lista de categorias válidas)
+POST http://localhost:8080/transactions
+Content-Type: application/json
+
+{
+  "description": "Compras",
+  "category": "MERCADO",
+  "amount": 1000
+}
+
+### Listar gastos de uma categoria (GROCERIES, PHARMA, AUTO, RESTAURANT ou OTHER)
 GET http://localhost:8080/transactions/GROCERIES
 
-### Resumo dos gastos: total geral e total por categoria
+### Resumo de todos os gastos: total geral e total por categoria
 GET http://localhost:8080/transactions/summary
 
-### Comando de voz: envia um áudio e recebe a resposta em MP3 (precisa de OPENAI_API_KEY válida)
+### Resumo de um período (datas inclusivas, formato AAAA-MM-DD)
+GET http://localhost:8080/transactions/summary?from=2026-10-01&to=2026-10-31
+
+### Conversar com o assistente por texto (precisa de OPENAI_API_KEY com créditos)
+POST http://localhost:8080/transactions/ai/text
+Content-Type: application/json
+
+{
+  "message": "Ontem gastei 45 reais e 90 centavos num restaurante"
+}
+
+### Perguntar ao assistente por texto
+POST http://localhost:8080/transactions/ai/text
+Content-Type: application/json
+
+{
+  "message": "Quanto eu gastei este mês?"
+}
+
+### Comando de voz: envia um áudio e recebe a resposta em MP3 (precisa de OPENAI_API_KEY com créditos)
 POST http://localhost:8080/transactions/ai
 Content-Type: multipart/form-data; boundary=boundary
 
